@@ -46,7 +46,7 @@
 #define BOTTLE_DROP_SOUND		"vo/watergate/drop_beer.mp3"
 #define BOTTLE_PICKUP_SOUND		"vo/watergate/pickup_beer.mp3"
 
-#define CONFIG_MAXCHAR		256
+#define CONFIG_MAXCHAR		1024
 
 #define TICK_NEVER_THINK		-1.0
 
@@ -446,6 +446,7 @@ bool g_Enabled;
 bool g_TF2Items;
 bool g_LoadSoundscript;
 bool g_ChangeTeamSilent;
+bool g_WeaponSwitch;
 FRRoundState g_RoundState;
 int g_PlayerCount;
 int g_PlayerDestructionLogic = INVALID_ENT_REFERENCE;
@@ -722,7 +723,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		return;
 	
 	//Scout falling damage immunity
-	GameRules_SetProp("m_bPowerupMode", true);
+	//GameRules_SetProp("m_bPowerupMode", true);
 	
 	if (FRPlayer(client).PlayerState == PlayerState_BattleBus && BattleBus_AllowedToDrop())
 	{
