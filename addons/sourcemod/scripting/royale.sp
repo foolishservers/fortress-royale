@@ -46,7 +46,7 @@
 #define BOTTLE_DROP_SOUND		"vo/watergate/drop_beer.mp3"
 #define BOTTLE_PICKUP_SOUND		"vo/watergate/pickup_beer.mp3"
 
-#define CONFIG_MAXCHAR		1024
+#define CONFIG_MAXCHAR		2048
 
 #define TICK_NEVER_THINK		-1.0
 
