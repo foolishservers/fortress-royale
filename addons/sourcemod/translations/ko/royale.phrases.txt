@@ -97,12 +97,12 @@
 	"RoundState_MostKills_One"
 	{
 		"#format"	"{1:N},{2:d}"
-		"ko"		"최다 킬: {1} | {2} 명을 죽이고 이번 라운드의 최다 킬 수를 기록했습니다!"
+		"ko"		"킬 리더: {1} | {2} 킬"
 	}
 	"RoundState_MostKills_Many"
 	{
 		"#format"	"{1:s},{2:N},{3:d}"
-		"ko"		"최다 킬: {1} , {2} | {3} 명을 죽이고 이번 라운드의 최다 킬 수를 기록했습니다!"
+		"ko"		"공동 킬 리더: {1} , {2} | {3} 킬"
 	}
 	
 	"Zone_ShrinkAlert"
