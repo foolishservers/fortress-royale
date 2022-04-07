@@ -13,4 +13,4 @@ cp -r ../models package
 cp -r ../sound package
 cp -r ../scripts/vehicles package/scripts
 
-zip package.zip addons/sourcemod/configs/ addons/sourcemod/gamedata/ addons/sourcemod/plugins/ addons/sourcemod/translations/ materials/ models/ sound/ scripts/vehicles/
+zip -r package.zip addons/sourcemod/configs/ addons/sourcemod/gamedata/ addons/sourcemod/plugins/ addons/sourcemod/translations/ ../materials/ ../models/ ../sound/ ../scripts/vehicles/
