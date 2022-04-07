@@ -12,7 +12,7 @@ cp -r ../addons/sourcemod/translations package/addons/sourcemod
 cp -r ../materials package
 cp -r ../models package
 cp -r ../sound package
-cp -r ../scripts/vehicles package/scripts/vehicles
+cp -r ../scripts/vehicles package/scripts/
 
 cd package
 
