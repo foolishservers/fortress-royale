@@ -12,3 +12,7 @@ cp -r ../materials package
 cp -r ../models package
 cp -r ../sound package
 cp -r ../scripts/vehicles package/scripts
+
+pushd build
+7za a -r package.zip addons/sourcemod/configs/ addons/sourcemod/gamedata/ addons/sourcemod/plugins/ addons/sourcemod/translations/ materials/ models/ sound/ scripts/vehicles/
+popd
