@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      
+      - name: Environments
+        run: |
+          echo "SM_VERSION=1.10" >> $GITHUB_ENV
+      
+      - name: Install
+        run: |
+          bash scripts/install.sh
+      
+      - name: Set Version
+        run: |
+          bash scripts/date.sh
+      
+      - name: Compile
+        run: |
+          cd build/addons/sourcemod/scripting
+          ./spcomp -E royale.sp -o ../plugins/royale.smx
+      
+      - name: Package
+        run: |
+          bash scripts/package.sh
+      
+      - name: Set Commit Hash
+        id: commit_info
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: workflow-build${{ github.run_number }}
+          release_name: Build ${{ steps.commit_info.outputs.sha_short  }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/package.zip
+          asset_name: package.zip
+          asset_content_type: application/zip
