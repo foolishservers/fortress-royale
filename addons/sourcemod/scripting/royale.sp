@@ -667,6 +667,7 @@ public void OnMapStart()
 public void OnMapEnd()
 {
 	g_RoundState = FRRoundState_Waiting;
+	Disable();
 }
 
 public void OnLibraryAdded(const char[] name)
