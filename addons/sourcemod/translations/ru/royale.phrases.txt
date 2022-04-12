@@ -2,7 +2,7 @@
 {
 	"BattleBus_HowToDrop"
 	{
-		"ru"		"%%+attack3%% - ВОЙТИ В БОЙ"
+		"ru"		"%%+reload%% - ВОЙТИ В БОЙ"
 	}
 	"BattleBus_SecToDeployParachute"
 	{

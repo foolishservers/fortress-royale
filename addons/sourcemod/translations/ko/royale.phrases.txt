@@ -2,7 +2,7 @@
 {
 	"BattleBus_HowToDrop"
 	{
-		"ko"		"%%+attack3%% 키(기본 마우스 휠 클릭)을 눌러 버스에서 내리고 착지하세요."
+		"ko"		"%%+reload%% 키(기본 R 키 누르기)을 눌러 버스에서 내리고 착지하세요."
 	}
 	"BattleBus_SecToDeployParachute"
 	{

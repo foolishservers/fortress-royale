@@ -2,7 +2,7 @@
 {
 	"BattleBus_HowToDrop"
 	{
-		"en"		"%%+attack3%% DROP INTO BATTLE"
+		"en"		"%%+reload%% DROP INTO BATTLE"
 	}
 	"BattleBus_SecToDeployParachute"
 	{
