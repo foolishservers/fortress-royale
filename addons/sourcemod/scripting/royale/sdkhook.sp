@@ -465,7 +465,7 @@ public void Projectile_TouchPost(int entity, int other)
 
 public Action PropVehicle_Spawn(int vehicle)
 {
-	Vehicles_Spawn(vehicle);
+	//Vehicles_Spawn(vehicle);
 }
 
 public Action PropVehicle_SpawnPost(int vehicle)

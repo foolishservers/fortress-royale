@@ -33,11 +33,11 @@ static Handle g_SDKCallWeaponCanSwitchTo;
 static Handle g_SDKCallGiveNamedItem;
 static Handle g_SDKCallGetSlot;
 static Handle g_SDKCallEquipWearable;
-static Handle g_SDKCallStudioFrameAdvance;
+//static Handle g_SDKCallStudioFrameAdvance;
 static Handle g_SDKCallAddPlayer;
 static Handle g_SDKCallRemovePlayer;
 static Handle g_SDKCallVehicleSetupMove;
-static Handle g_SDKCallHandleEntryExitFinish;
+//static Handle g_SDKCallHandleEntryExitFinish;
 static Handle g_SDKCallGetDriver;
 static Handle g_SDKCallGetHealRate;
 
@@ -61,11 +61,11 @@ void SDKCall_Init(GameData gamedata)
 	g_SDKCallGiveNamedItem = PrepSDKCall_GiveNamedItem(gamedata);
 	g_SDKCallGetSlot = PrepSDKCall_GetSlot(gamedata);
 	g_SDKCallEquipWearable = PrepSDKCall_EquipWearable(gamedata);
-	g_SDKCallStudioFrameAdvance = PrepSDKCall_StudioFrameAdvance(gamedata);
+	//g_SDKCallStudioFrameAdvance = PrepSDKCall_StudioFrameAdvance(gamedata);
 	g_SDKCallAddPlayer = PrepSDKCall_AddPlayer(gamedata);
 	g_SDKCallRemovePlayer = PrepSDKCall_RemovePlayer(gamedata);
 	g_SDKCallVehicleSetupMove = PrepSDKCall_VehicleSetupMove(gamedata);
-	g_SDKCallHandleEntryExitFinish = PrepSDKCall_HandleEntryExitFinish(gamedata);
+	//g_SDKCallHandleEntryExitFinish = PrepSDKCall_HandleEntryExitFinish(gamedata);
 	g_SDKCallGetDriver = PrepSDKCall_GetDriver(gamedata);
 	g_SDKCallGetHealRate = PrepSDKCall_GetHealRate(gamedata);
 }
@@ -328,6 +328,7 @@ static Handle PrepSDKCall_EquipWearable(GameData gamedata)
 	return call;
 }
 
+/*
 static Handle PrepSDKCall_StudioFrameAdvance(GameData gamedata)
 {
 	StartPrepSDKCall(SDKCall_Entity);
@@ -339,6 +340,7 @@ static Handle PrepSDKCall_StudioFrameAdvance(GameData gamedata)
 	
 	return call;
 }
+*/
 
 static Handle PrepSDKCall_AddPlayer(GameData gamedata)
 {
@@ -382,6 +384,7 @@ static Handle PrepSDKCall_VehicleSetupMove(GameData gamedata)
 	return call;
 }
 
+/*
 static Handle PrepSDKCall_HandleEntryExitFinish(GameData gamedata)
 {
 	StartPrepSDKCall(SDKCall_Raw);
@@ -395,6 +398,7 @@ static Handle PrepSDKCall_HandleEntryExitFinish(GameData gamedata)
 	
 	return call;
 }
+*/
 
 static Handle PrepSDKCall_GetDriver(GameData gamedata)
 {
@@ -514,11 +518,12 @@ void SDKCall_EquipWearable(int client, int wearable)
 {
 	SDKCall(g_SDKCallEquipWearable, client, wearable);
 }
-
+/*
 void SDKCall_StudioFrameAdvance(int entity)
 {
 	SDKCall(g_SDKCallStudioFrameAdvance, entity);
 }
+*/
 
 void SDKCall_AddPlayer(Address team, int client)
 {
@@ -537,12 +542,14 @@ void SDKCall_VehicleSetupMove(int vehicle, int client, Address ucmd, Address hel
 		SDKCall(g_SDKCallVehicleSetupMove, serverVehicle, client, ucmd, helper, move);
 }
 
+/*
 void SDKCall_HandleEntryExitFinish(int vehicle, bool exitAnimOn, bool resetAnim)
 {
 	Address serverVehicle = GetServerVehicle(vehicle);
 	if (serverVehicle != Address_Null)
 		SDKCall(g_SDKCallHandleEntryExitFinish, serverVehicle, exitAnimOn, resetAnim);
 }
+*/
 
 int SDKCall_GetDriver(Address serverVehicle)
 {

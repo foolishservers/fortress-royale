@@ -25,7 +25,7 @@
 
 #undef REQUIRE_EXTENSIONS
 #tryinclude <tf2items>
-#tryinclude <loadsoundscript>
+//#tryinclude <loadsoundscript>
 #define REQUIRE_EXTENSIONS
 
 #pragma semicolon 1
@@ -444,7 +444,7 @@ TFCond g_RuneConds[] = {
 
 bool g_Enabled;
 bool g_TF2Items;
-bool g_LoadSoundscript;
+//bool g_LoadSoundscript;
 bool g_ChangeTeamSilent;
 bool g_WeaponSwitch;
 FRRoundState g_RoundState;
@@ -473,8 +473,8 @@ ConVar fr_zone_nextdisplay;
 ConVar fr_zone_nextdisplay_player;
 ConVar fr_zone_damagemultiplier;
 
-ConVar fr_vehicle_passenger_damagemultiplier;
-ConVar fr_vehicle_lock_speed;
+//ConVar fr_vehicle_passenger_damagemultiplier;
+//ConVar fr_vehicle_lock_speed;
 
 ConVar fr_truce_duration;
 
@@ -496,8 +496,8 @@ int g_OffsetNextSpell;
 #include "royale/loot/loot_callbacks.sp"
 #include "royale/loot/loot.sp"
 
-#include "royale/vehicles/vehicles_config.sp"
-#include "royale/vehicles/vehicles.sp"
+//#include "royale/vehicles/vehicles_config.sp"
+//#include "royale/vehicles/vehicles.sp"
 
 #include "royale/battlebus.sp"
 #include "royale/command.sp"
@@ -528,7 +528,7 @@ public void OnPluginStart()
 	LoadTranslations("royale.phrases");
 	
 	g_TF2Items = LibraryExists("TF2Items");
-	g_LoadSoundscript = LibraryExists("LoadSoundscript");
+	//g_LoadSoundscript = LibraryExists("LoadSoundscript");
 	
 	g_PrecacheWeapon = new StringMap();
 	
@@ -565,10 +565,12 @@ public void OnPluginStart()
 	}
 }
 
+/*
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
 	MarkNativeAsOptional("LoadSoundScript");
 }
+*/
 
 void Enable()
 {
@@ -679,11 +681,13 @@ public void OnLibraryAdded(const char[] name)
 		//We cant allow TF2Items load while GiveNamedItem already hooked due to crash
 		if (DHook_IsGiveNamedItemActive())
 			SetFailState("Do not load TF2Items midgame while Royale is already loaded!");
-	} 
+	}
+	/*	
 	else if (StrEqual(name, "LoadSoundscript"))
 	{
 		g_LoadSoundscript = true;
 	}
+	*/
 }
 
 public void OnLibraryRemoved(const char[] name)
@@ -698,10 +702,12 @@ public void OnLibraryRemoved(const char[] name)
 				if (IsClientInGame(iClient))
 					DHook_HookGiveNamedItem(iClient);
 	}
+	/*
 	else if (StrEqual(name, "LoadSoundscript"))
 	{
 		g_LoadSoundscript = false;
 	}
+	*/
 }
 
 public void OnClientPutInServer(int client)

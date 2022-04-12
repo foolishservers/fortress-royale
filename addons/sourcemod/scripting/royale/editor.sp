@@ -58,7 +58,7 @@ void Editor_Display(int client)
 		menu.AddItem("delete", "Editor_Delete", ITEMDRAW_DISABLED);
 		menu.AddItem("move", "Editor_Move", ITEMDRAW_DISABLED);
 		menu.AddItem("crate", "Editor_CreateCrate");
-		menu.AddItem("vehicle", "Editor_CreateVehicle");
+		//menu.AddItem("vehicle", "Editor_CreateVehicle");
 	}
 	else
 	{
@@ -72,13 +72,13 @@ void Editor_Display(int client)
 		{
 			menu.AddItem("move", "Editor_Move");
 			menu.AddItem("crate", "Editor_CreateCrate");
-			menu.AddItem("vehicle", "Editor_CreateVehicle");
+			//menu.AddItem("vehicle", "Editor_CreateVehicle");
 		}
 		else if (FRPlayer(client).EditorState == EditorState_Placing)
 		{
 			menu.AddItem("place", "Editor_Place");
 			menu.AddItem("crate", "Editor_CreateCrate", ITEMDRAW_DISABLED);
-			menu.AddItem("vehicle", "Editor_CreateVehicle", ITEMDRAW_DISABLED);
+			//menu.AddItem("vehicle", "Editor_CreateVehicle", ITEMDRAW_DISABLED);
 		}
 	}
 	
@@ -105,7 +105,7 @@ public int Editor_MenuSelected(Menu menu, MenuAction action, int param1, int par
 				switch (itemType)
 				{
 					case EditorItem_Crate: LootConfig_DeleteCrateByEntity(entity);
-					case EditorItem_Vehicle: VehiclesConfig_DeleteMapVehicleByEntity(entity);
+					//case EditorItem_Vehicle: VehiclesConfig_DeleteMapVehicleByEntity(entity);
 				}
 				
 				RemoveEntity(entity);
@@ -142,6 +142,7 @@ public int Editor_MenuSelected(Menu menu, MenuAction action, int param1, int par
 					}
 					default:	//Ghost vehicle is not a valid map vehicle from config until placed
 					{
+						/*
 						char targetname[CONFIG_MAXCHAR];
 						GetEntPropString(ghost, Prop_Data, "m_iName", targetname, sizeof(targetname));
 						
@@ -153,6 +154,7 @@ public int Editor_MenuSelected(Menu menu, MenuAction action, int param1, int par
 						entity = Vehicles_CreateEntity(config);
 						config.entity = entity;
 						VehiclesConfig_AddMapVehicle(config);
+						*/
 					}
 				}
 				
@@ -173,7 +175,7 @@ public int Editor_MenuSelected(Menu menu, MenuAction action, int param1, int par
 				switch (itemType)
 				{
 					case EditorItem_Crate: LootConfig_DeleteCrateByEntity(entity);
-					case EditorItem_Vehicle: VehiclesConfig_DeleteMapVehicleByEntity(entity);
+					//case EditorItem_Vehicle: VehiclesConfig_DeleteMapVehicleByEntity(entity);
 				}
 				
 				FRPlayer(param1).EditorItemRef = Editor_CreateGhostEntity(itemType, name);
@@ -236,6 +238,7 @@ void Editor_DisplayPrefab(int client, EditorItem itemType)
 				pos++;
 			}
 		}
+		/*
 		case EditorItem_Vehicle:
 		{
 			int pos;
@@ -246,6 +249,7 @@ void Editor_DisplayPrefab(int client, EditorItem itemType)
 				pos++;
 			}
 		}
+		*/
 	}
 	
 	menu.ExitBackButton = true;
@@ -308,6 +312,7 @@ int Editor_CreateGhostEntity(EditorItem itemType, const char[] prefab)
 			loot.entity = ghost;
 			LootConfig_AddCrate(loot);
 		}
+		/*
 		case EditorItem_Vehicle:
 		{
 			VehicleConfig config;
@@ -316,6 +321,7 @@ int Editor_CreateGhostEntity(EditorItem itemType, const char[] prefab)
 			//Create new vehicle
 			ghost = Vehicles_CreateEntity(config);
 		}
+		*/
 	}
 	
 	SetEntProp(ghost, Prop_Send, "m_nSolidType", SOLID_NONE);
@@ -376,8 +382,10 @@ EditorItem Editor_GetItemType(int entity)
 {
 	if (Loot_IsCrate(entity))
 		return EditorItem_Crate;
+	/*
 	else if (VehiclesConfig_IsMapVehicle(entity))
 		return EditorItem_Vehicle;
+	*/
 	else
 		return EditorItem_None;
 }
@@ -393,11 +401,13 @@ void Editor_GetItemPrefab(int entity, char[] name, int length)
 			LootConfig_GetCrateByEntity(entity, loot);
 			strcopy(name, length, loot.name);
 		}
+		/*
 		case EditorItem_Vehicle:
 		{
 			VehicleConfig config;
 			VehiclesConfig_GetMapVehicleByEntity(entity, config);
 			strcopy(name, length, config.name);
 		}
+		*/
 	}
 }

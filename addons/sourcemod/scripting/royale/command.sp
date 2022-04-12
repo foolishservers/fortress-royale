@@ -18,7 +18,7 @@
 void Command_Init()
 {
 	RegAdminCmd("sm_editor", Command_Editor, ADMFLAG_CHANGEMAP);
-	RegAdminCmd("sm_vehicle", Command_Vehicle, ADMFLAG_CHANGEMAP);
+	//RegAdminCmd("sm_vehicle", Command_Vehicle, ADMFLAG_CHANGEMAP);
 }
 
 public Action Command_Editor(int client, int args)
@@ -36,6 +36,7 @@ public Action Command_Editor(int client, int args)
 	return Plugin_Handled;
 }
 
+/*
 public Action Command_Vehicle(int client, int args)
 {
 	if (!g_Enabled)
@@ -66,3 +67,4 @@ public Action Command_Vehicle(int client, int args)
 	Vehicles_CreateEntityAtCrosshair(config, client);
 	return Plugin_Handled;
 }
+*/

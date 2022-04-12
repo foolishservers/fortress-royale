@@ -42,8 +42,8 @@ static DynamicHook g_DHookFireballExplode;
 static DynamicHook g_DHookGetLiveTime;
 static DynamicHook g_DHookStartBuilding;
 static DynamicHook g_DHookGetBaseHealth;
-static DynamicHook g_DHookSetPassenger;
-static DynamicHook g_DHookIsPassengerVisible;
+//static DynamicHook g_DHookSetPassenger;
+//static DynamicHook g_DHookIsPassengerVisible;
 
 static int g_HookIdGiveNamedItem[TF_MAXPLAYERS + 1];
 static int g_HookIdShouldCollidePre[TF_MAXPLAYERS + 1];
@@ -78,8 +78,8 @@ void DHook_Init(GameData gamedata)
 	g_DHookGetLiveTime = DHook_CreateVirtual(gamedata, "CTFGrenadePipebombProjectile::GetLiveTime");
 	g_DHookStartBuilding = DHook_CreateVirtual(gamedata, "CBaseObject::StartBuilding");
 	g_DHookGetBaseHealth = DHook_CreateVirtual(gamedata, "CBaseObject::GetBaseHealth");
-	g_DHookSetPassenger = DHook_CreateVirtual(gamedata, "CBaseServerVehicle::SetPassenger");
-	g_DHookIsPassengerVisible = DHook_CreateVirtual(gamedata, "CBaseServerVehicle::IsPassengerVisible");
+	//g_DHookSetPassenger = DHook_CreateVirtual(gamedata, "CBaseServerVehicle::SetPassenger");
+	//g_DHookIsPassengerVisible = DHook_CreateVirtual(gamedata, "CBaseServerVehicle::IsPassengerVisible");
 }
 
 static void DHook_CreateDetour(GameData gamedata, const char[] name, DHookCallback callbackPre = INVALID_FUNCTION, DHookCallback callbackPost = INVALID_FUNCTION)
@@ -187,11 +187,13 @@ void DHook_UnhookClient(int client)
 	DynamicHook.RemoveHook(g_HookIdForceRespawnPost[client]);
 }
 
+/*
 void DHook_HookVehicle(int vehicle)
 {
 	g_DHookSetPassenger.HookRaw(Hook_Pre, GetServerVehicle(vehicle), DHook_SetPassengerPre);
 	g_DHookIsPassengerVisible.HookRaw(Hook_Post, GetServerVehicle(vehicle), DHook_IsPassengerVisiblePre);
 }
+*/
 
 void DHook_OnEntityCreated(int entity, const char[] classname)
 {

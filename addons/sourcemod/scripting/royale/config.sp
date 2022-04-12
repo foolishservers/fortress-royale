@@ -100,12 +100,14 @@ void Config_Save()
 	LootConfig_SetConfig(kv);
 	kv.GoBack();
 	
+	/*
 	kv.JumpToKey("Vehicles", true);
 	if (kv.GotoFirstSubKey(false))
 		while (kv.DeleteThis() == 1) {}
 	
 	VehiclesConfig_SetConfig(kv);
 	kv.GoBack();
+	*/
 	
 	kv.ExportToFile(filePath);
 	
