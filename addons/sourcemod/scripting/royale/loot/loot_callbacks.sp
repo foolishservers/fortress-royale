@@ -24,6 +24,9 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 		return;
 	}
 	
+	char classname[CONFIG_MAXCHAR];
+	params.GetString("classname", classname, sizeof(classname));
+	
 	//Make sure client is in correct team for weapon to have correct skin from CTFWeaponBase::GetSkin
 	FRPlayer(client).ChangeToTeam();
 	
@@ -43,7 +46,7 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 		int reskin = LoadFromAddress(item + view_as<Address>(g_OffsetItemDefinitionIndex), NumberType_Int16);
 		if (reskin == defindex)
 		{
-			weapon = TF2_GiveNamedItem(client, item);
+			weapon = TF2_GiveNamedItem(client, item, TFClass_Unknown, classname);
 			break;
 		}
 		
@@ -57,7 +60,7 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 			{
 				if (StringToIntEx(indexbuffer[i], defindexbuffer) && reskin == defindexbuffer)
 				{
-					weapon = TF2_GiveNamedItem(client, item);
+					weapon = TF2_GiveNamedItem(client, item, TFClass_Unknown, classname);
 					break;
 				}
 			}
@@ -70,7 +73,7 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 	//Can't find reskin, create default weapon
 	if (weapon == INVALID_ENT_REFERENCE)
 	{
-		weapon = TF2_CreateWeapon(defindex);
+		weapon = TF2_CreateWeapon(defindex, classname);
 		if (weapon != INVALID_ENT_REFERENCE)
 			SetEntProp(weapon, Prop_Send, "m_iAccountID", GetSteamAccountID(client, false));
 	}

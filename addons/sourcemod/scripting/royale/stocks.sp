@@ -402,6 +402,9 @@ stock bool TF2_TryToPickupDroppedWeapon(int client)
 	if (droppedWeapon == INVALID_ENT_REFERENCE || droppedWeapon == 0)
 		return false;
 	
+	char classname[256];
+	GetEntPropString(droppedWeapon, Prop_Data, "m_iName", classname, sizeof(classname));
+	
 	int defindex = GetEntProp(droppedWeapon, Prop_Send, "m_iItemDefinitionIndex");
 	TFClassType class = TFClass_Unknown;
 	int slot = -1;
@@ -471,7 +474,7 @@ stock bool TF2_TryToPickupDroppedWeapon(int client)
 		itemOffset = FindSendPropInfo("CTFDroppedWeapon", "m_Item");
 	
 	//Create and equip new weapon
-	int weapon = TF2_GiveNamedItem(client, GetEntityAddress(droppedWeapon) + view_as<Address>(itemOffset), class);
+	int weapon = TF2_GiveNamedItem(client, GetEntityAddress(droppedWeapon) + view_as<Address>(itemOffset), class, classname);
 	if (weapon == INVALID_ENT_REFERENCE)
 		return false;
 	
@@ -561,12 +564,19 @@ stock Action TF2_OnGiveNamedItem(int client, const char[] classname, int index)
 	return Plugin_Continue;
 }
 
-stock int TF2_GiveNamedItem(int client, Address item, TFClassType class = TFClass_Unknown)
+stock int TF2_GiveNamedItem(int client, Address item, TFClassType class = TFClass_Unknown, char[] classnameTemp = NULL_STRING)
 {
 	int defindex = LoadFromAddress(item + view_as<Address>(g_OffsetItemDefinitionIndex), NumberType_Int16);
 	
 	char classname[256];
-	TF2Econ_GetItemClassName(defindex, classname, sizeof(classname));
+	if (classnameTemp[0])
+	{
+		strcopy(classname, sizeof(classname), classnameTemp);
+	}
+	else
+	{
+		TF2Econ_GetItemClassName(defindex, classname, sizeof(classname));
+	}
 	
 	if (class == TFClass_Unknown)
 	{
@@ -668,12 +678,13 @@ stock int TF2_CreateWeapon(int defindex, const char[] classnameTemp = NULL_STRIN
 
 stock int TF2_CreateDroppedWeapon(int client, int fromWeapon, bool swap, const float origin[3], const float angles[3] = { 0.0, 0.0, 0.0 })
 {
-	char classname[32];
-	GetEntityNetClass(fromWeapon, classname, sizeof(classname));
-	int itemOffset = FindSendPropInfo(classname, "m_Item");
+	char netClassname[32], classname[128];
+	GetEdictClassname(fromWeapon, classname, sizeof(classname));
+	GetEntityNetClass(fromWeapon, netClassname, sizeof(netClassname));
+	int itemOffset = FindSendPropInfo(netClassname, "m_Item");
 	if (itemOffset <= -1)
 	{
-		LogError("Failed to find m_Item on: %s", classname);
+		LogError("Failed to find m_Item on: %s", netClassname);
 		return INVALID_ENT_REFERENCE;
 	}
 	
@@ -745,6 +756,8 @@ stock int TF2_CreateDroppedWeapon(int client, int fromWeapon, bool swap, const f
 	}
 	
 	DispatchSpawn(droppedWeapon);
+	
+	SetEntPropString(droppedWeapon, Prop_Data, "m_iName", classname);
 	
 	//Check if weapon is not marked for deletion after spawn, otherwise we may get bad physics model leading to a crash
 	if (GetEntProp(droppedWeapon, Prop_Data, "m_iEFlags") & EFL_KILLME)
