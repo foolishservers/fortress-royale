@@ -92,7 +92,7 @@ void SDKHook_OnEntityCreated(int entity, const char[] classname)
 	}
 	else if (StrContains(classname, "prop_vehicle") == 0)
 	{
-		SDKHook(entity, SDKHook_Spawn, PropVehicle_Spawn);
+		//SDKHook(entity, SDKHook_Spawn, PropVehicle_Spawn);
 		SDKHook(entity, SDKHook_SpawnPost, PropVehicle_SpawnPost);
 	}
 	else if (StrContains(classname, "prop_dynamic") == 0)
@@ -470,7 +470,8 @@ public Action PropVehicle_Spawn(int vehicle)
 
 public Action PropVehicle_SpawnPost(int vehicle)
 {
-	Vehicles_SpawnPost(vehicle);
+	RemoveEntity(vehicle);
+	//Vehicles_SpawnPost(vehicle);
 }
 
 public void PropDynamic_SpawnPost(int prop)

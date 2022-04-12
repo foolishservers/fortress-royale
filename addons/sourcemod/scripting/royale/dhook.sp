@@ -67,7 +67,7 @@ void DHook_Init(GameData gamedata)
 	DHook_CreateDetour(gamedata, "CWeaponMedigun::StopHealingOwner", DHook_StopHealingOwnerPre, _);
 	DHook_CreateDetour(gamedata, "CEyeballBoss::FindClosestVisibleVictim", DHook_FindClosestVisibleVictimPre, DHook_FindClosestVisibleVictimPost);
 	DHook_CreateDetour(gamedata, "CLagCompensationManager::StartLagCompensation", DHook_StartLagCompensationPre, DHook_StartLagCompensationPost);
-	DHook_CreateDetour(gamedata, "CTFPlayerMove::SetupMove", DHook_SetupMovePre, _);
+	//DHook_CreateDetour(gamedata, "CTFPlayerMove::SetupMove", DHook_SetupMovePre, _);
 	
 	g_DHookShouldCollide = DHook_CreateVirtual(gamedata, "CBaseEntity::ShouldCollide");
 	g_DHookGetMaxHealth = DHook_CreateVirtual(gamedata, "CBaseEntity::GetMaxHealth");

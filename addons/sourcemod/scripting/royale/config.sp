@@ -19,7 +19,7 @@ void Config_Refresh()
 {
 	g_PrecacheWeapon.Clear();
 	LootConfig_Clear();
-	VehiclesConfig_Clear();
+	//VehiclesConfig_Clear();
 	
 	//Load 'global.cfg' for all maps
 	char filePath[PLATFORM_MAX_PATH];
@@ -76,7 +76,7 @@ void Config_ReadMapConfig(const char[] filePath)
 		}
 		
 		LootConfig_ReadConfig(kv);
-		VehiclesConfig_ReadConfig(kv);
+		//VehiclesConfig_ReadConfig(kv);
 	}
 	else
 	{

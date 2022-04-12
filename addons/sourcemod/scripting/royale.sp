@@ -555,8 +555,8 @@ public void OnPluginStart()
 	Event_Init();
 	Loot_Init();
 	LootConfig_Init();
-	Vehicles_Init();
-	VehiclesConfig_Init();
+	//Vehicles_Init();
+	//VehiclesConfig_Init();
 	
 	for (int client = 1; client <= MaxClients; client++)
 	{
@@ -816,7 +816,7 @@ public void OnEntityDestroyed(int entity)
 	{
 		BattleBus_OnEntityDestroyed(entity);
 		Loot_OnEntityDestroyed(entity);
-		Vehicles_OnEntityDestroyed(entity);
+		//Vehicles_OnEntityDestroyed(entity);
 		FREntity.Destroy(entity);
 	}
 }
@@ -945,7 +945,7 @@ public Action EntOutput_SetupFinished(const char[] output, int caller, int activ
 	
 	
 	Loot_SetupFinished();
-	Vehicles_SetupFinished();
+	//Vehicles_SetupFinished();
 	Zone_SetupFinished();
 }
 
