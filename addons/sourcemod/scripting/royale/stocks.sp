@@ -416,6 +416,10 @@ stock bool TF2_TryToPickupDroppedWeapon(int client)
 		slot = TF2_GetItemSlot(defindex, class);
 		if (slot < WeaponSlot_Primary)
 			return false;
+		else
+		{
+			slot = TF2_GetSlotInClassname(classname);
+		}
 	}
 	else
 	{
@@ -673,13 +677,13 @@ stock int TF2_CreateWeapon(int defindex, const char[] classnameTemp = NULL_STRIN
 	SetEntData(weapon, offset + 4, 0);	// m_iItemIDLow
 	
 	DispatchSpawn(weapon);
+	
 	return weapon;
 }
 
 stock int TF2_CreateDroppedWeapon(int client, int fromWeapon, bool swap, const float origin[3], const float angles[3] = { 0.0, 0.0, 0.0 })
 {
-	char netClassname[32], classname[128];
-	GetEdictClassname(fromWeapon, classname, sizeof(classname));
+	char netClassname[32];
 	GetEntityNetClass(fromWeapon, netClassname, sizeof(netClassname));
 	int itemOffset = FindSendPropInfo(netClassname, "m_Item");
 	if (itemOffset <= -1)
@@ -757,6 +761,8 @@ stock int TF2_CreateDroppedWeapon(int client, int fromWeapon, bool swap, const f
 	
 	DispatchSpawn(droppedWeapon);
 	
+	char classname[128];
+	GetEdictClassname(fromWeapon, classname, sizeof(classname));
 	SetEntPropString(droppedWeapon, Prop_Data, "m_iName", classname);
 	
 	//Check if weapon is not marked for deletion after spawn, otherwise we may get bad physics model leading to a crash
@@ -868,6 +874,137 @@ stock int TF2_GetItemSlot(int defindex, TFClassType class)
 	}
 	
 	return slot;
+}
+
+stock int TF2_GetSlotInClassname(char[] classname)
+{
+	char primary[][] = {
+		"tf_weapon_scattergun",
+		"tf_weapon_handgun_scout_primary",
+		"tf_weapon_soda_popper",
+		"tf_weapon_pep_brawler_blaster",
+		"tf_weapon_rocketlauncher",
+		"tf_weapon_rocketlauncher_directhit",
+		"tf_weapon_particle_cannon",
+		"tf_weapon_rocketlauncher_airstrike",
+		"tf_weapon_flamethrower",
+		"tf_weapon_rocketlauncher_fireball",
+		"tf_weapon_grenadelauncher",
+		"tf_weapon_cannon",
+		"tf_weapon_minigun",
+		"tf_weapon_shotgun_primary",
+		"tf_weapon_sentry_revenge",
+		"tf_weapon_drg_pomson",
+		"tf_weapon_shotgun_building_rescue",
+		"tf_weapon_syringegun_medic",
+		"tf_weapon_crossbow",
+		"tf_weapon_sniperrifle",
+		"tf_weapon_compound_bow",
+		"tf_weapon_sniperrifle_decap",
+		"tf_weapon_sniperrifle_classic",
+		"tf_weapon_revolver"
+	};
+	
+	for(int i = 0; i < sizeof(primary); i++)
+	{
+		if(StrEqual(classname, primary[i]))
+		{
+			return WeaponSlot_Primary;
+		}
+	}
+	
+	char secondary[][] ={
+		"tf_weapon_pistol",
+		"tf_weapon_lunchbox_drink",
+		"tf_weapon_jar_milk",
+		"tf_weapon_handgun_scout_secondary",
+		"tf_weapon_cleaver",
+		"tf_weapon_shotgun_soldier",
+		"tf_weapon_shotgun",
+		"tf_weapon_buff_item",
+		"tf_weapon_raygun",
+		"tf_weapon_shotgun_pyro",
+		"tf_weapon_flaregun",
+		"tf_weapon_flaregun_revenge",
+		"tf_weapon_rocketpack",
+		"tf_weapon_jar_gas",
+		"tf_weapon_pipebomblauncher",
+		"tf_wearable_demoshield",
+		"tf_weapon_shotgun_hwg",
+		"tf_weapon_lunchbox",
+		"tf_weapon_laser_pointer",
+		"tf_weapon_mechanical_arm",
+		"tf_weapon_medigun",
+		"tf_weapon_smg",
+		"tf_wearable_razorback",
+		"tf_weapon_jar",
+		"tf_weapon_charged_smg",
+		"tf_weapon_sapper"
+	};
+	
+	for(int i = 0; i < sizeof(secondary); i++)
+	{
+		if(StrEqual(classname, secondary[i]))
+		{
+			return WeaponSlot_Secondary;
+		}
+	}
+	
+	char melee[][] = {
+		"tf_weapon_bat",
+		"tf_weapon_bat_wood",
+		"tf_weapon_bat_fish",
+		"tf_weapon_bat_giftwrap",
+		"tf_weapon_shovel",
+		"tf_weapon_katana",
+		"tf_weapon_fireaxe",
+		"tf_weapon_breakable_sign",
+		"tf_weapon_slap",
+		"tf_weapon_bottle",
+		"tf_weapon_sword",
+		"tf_weapon_stickbomb",
+		"tf_weapon_fists",
+		"tf_weapon_wrench",
+		"tf_weapon_robot_arm",
+		"tf_weapon_bonesaw",
+		"tf_weapon_club",
+		"tf_weapon_knife"
+	};
+	
+	for(int i = 0; i < sizeof(melee); i++)
+	{
+		if(StrEqual(classname, melee[i]))
+		{
+			return WeaponSlot_Melee;
+		}
+	}
+	
+	if(StrEqual(classname, "tf_weapon_pda_engineer_build"))
+	{
+		return WeaponSlot_PDABuild;
+	}
+	
+	if(StrEqual(classname, "tf_weapon_pda_spy"))
+	{
+		return WeaponSlot_PDADisguise;
+	}
+	
+	if(StrEqual(classname, "tf_weapon_pda_engineer_destroy"))
+	{
+		return WeaponSlot_PDADestroy;
+	}
+	
+	if(StrEqual(classname, "tf_weapon_invis"))
+	{
+		return WeaponSlot_InvisWatch;
+	}
+	
+	if(StrEqual(classname, "tf_weapon_builder"))
+	{
+		return WeaponSlot_BuilderEngie;
+	}
+	
+	return -1;
 }
 
 stock bool TF2_GetItem(int client, int &weapon, int &pos)

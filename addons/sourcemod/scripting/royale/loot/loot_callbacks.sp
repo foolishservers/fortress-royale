@@ -109,6 +109,15 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 		}
 	}
 	
+	if (!TF2_IsWearable(weapon))
+	{
+		int clip;
+		if(params.GetIntEx("clip", clip))
+		{
+			SetEntProp(weapon, Prop_Data, "m_iClip1", clip);
+		}
+	}
+	
 	int droppedWeapon = TF2_CreateDroppedWeapon(client, weapon, false, origin);
 	
 	FRPlayer(client).ChangeToSpectator();
