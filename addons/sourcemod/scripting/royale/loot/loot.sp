@@ -198,8 +198,8 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 	if (0 < client <= MaxClients && IsClientInGame(client))
 		class = TF2_GetPlayerClass(client);
 	
-	LootTable lootTable;
-	bool found;
+	LootTable lootTable[3];
+	bool found[3];
 	
 	do
 	{
@@ -217,16 +217,40 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 		{
 			LootCrateContent content;
 			listContent.GetArray(i, content);
-			if (LootTable_GetRandomLoot(lootTable, client, content, class))
+			
+			if(!found[0])
 			{
-				found = true;
+				if (LootTable_GetRandomLoot(lootTable[0], client, content, class))
+				{
+					found[0] = true;
+				}
+			}
+			
+			if(!found[1])
+			{
+				if (LootTable_GetRandomLoot(lootTable[1], client, content, class))
+				{
+					found[1] = true;
+				}
+			}
+			
+			if(!found[2])
+			{
+				if (LootTable_GetRandomLoot(lootTable[2], client, content, class))
+				{
+					found[2] = true;
+				}
+			}
+			
+			if(found[0] && found[1] && found[2])
+			{
 				break;
 			}
 		}
 		
 		delete listContent;
 		
-		if (!found)
+		if (!found[0] || !found[1] || !found[2])
 		{
 			//Cant find any loots due to callback_shouldcreate, use fallback
 			if (loot.fallback[0])
@@ -244,19 +268,22 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 			}
 		}
 	}
-	while (!found);
+	while (!found[0] || !found[1] || !found[2]);
 	
 	float origin[3];
 	WorldSpaceCenter(crate, origin);
 	
-	//Start function call to loot creation function
-	Call_StartFunction(null, lootTable.callback_create);
-	Call_PushCell(client);
-	Call_PushCell(lootTable.callbackParams);
-	Call_PushArray(origin, sizeof(origin));
-	
-	if (Call_Finish() != SP_ERROR_NONE)
-		LogError("Unable to call function for LootType '%d' class '%d'", lootTable.type, class);
+	for(int i = 0; i < 3; i++)
+	{
+		//Start function call to loot creation function
+		Call_StartFunction(null, lootTable[i].callback_create);
+		Call_PushCell(client);
+		Call_PushCell(lootTable[i].callbackParams);
+		Call_PushArray(origin, sizeof(origin));
+		
+		if (Call_Finish() != SP_ERROR_NONE)
+			LogError("Unable to call function for LootType[%d] '%d' class '%d'", i, lootTable[i].type, class);
+	}
 	
 	//Reset pickup time so client dont pickup weapon in an instant
 	if (0 < client <= MaxClients)

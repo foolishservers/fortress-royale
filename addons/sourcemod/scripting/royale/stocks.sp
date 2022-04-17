@@ -418,7 +418,11 @@ stock bool TF2_TryToPickupDroppedWeapon(int client)
 			return false;
 		else
 		{
-			slot = TF2_GetSlotInClassname(classname);
+			int tempSlot = TF2_GetSlotInClassname(classname);
+			if (tempSlot >= WeaponSlot_Primary)
+			{
+				slot = tempSlot;
+			}
 		}
 	}
 	else
