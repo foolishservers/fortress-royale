@@ -201,74 +201,57 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 	LootTable lootTable[3];
 	bool found[3];
 	
-	do
+	for(int i = 0; i < 3; i++)
 	{
-		//Search the contents table of this crate while rolling for percentage chance
-		ArrayList listContent = loot.GetListOfLootCrateContent();
-		int length = listContent.Length;
-		if (length == 0)
+		do
 		{
+			//Search the contents table of this crate while rolling for percentage chance
+			ArrayList listContent = loot.GetListOfLootCrateContent();
+			int length = listContent.Length;
+			if (length == 0)
+			{
+				delete listContent;
+				LogError("Unable to find any contents from LootCrate '%s' (Make sure there atleast one content with 100%% chance!)", loot.name);
+				return;
+			}
+		
+			for (int j = 0; j < length; j++)
+			{
+				LootCrateContent content;
+				listContent.GetArray(j, content);
+			
+				if(!found[i])
+				{
+					if (LootTable_GetRandomLoot(lootTable[i], client, content, class))
+					{
+						found[i] = true;
+						break;
+					}
+				}
+			}
+		
 			delete listContent;
-			LogError("Unable to find any contents from LootCrate '%s' (Make sure there atleast one content with 100%% chance!)", loot.name);
-			return;
-		}
 		
-		for (int i = 0; i < length; i++)
-		{
-			LootCrateContent content;
-			listContent.GetArray(i, content);
-			
-			if(!found[0])
+			if (!found[i])
 			{
-				if (LootTable_GetRandomLoot(lootTable[0], client, content, class))
+				//Cant find any loots due to callback_shouldcreate, use fallback
+				if (loot.fallback[0])
 				{
-					found[0] = true;
+					if (!LootConfig_GetByName(loot.fallback, loot))
+					{
+						LogError("Unable to find fallback name '%s' from LootCrate '%s'", loot.fallback, loot.name);
+						return;
+					}
 				}
-			}
-			
-			if(!found[1])
-			{
-				if (LootTable_GetRandomLoot(lootTable[1], client, content, class))
+				else
 				{
-					found[1] = true;
-				}
-			}
-			
-			if(!found[2])
-			{
-				if (LootTable_GetRandomLoot(lootTable[2], client, content, class))
-				{
-					found[2] = true;
-				}
-			}
-			
-			if(found[0] && found[1] && found[2])
-			{
-				break;
-			}
-		}
-		
-		delete listContent;
-		
-		if (!found[0] || !found[1] || !found[2])
-		{
-			//Cant find any loots due to callback_shouldcreate, use fallback
-			if (loot.fallback[0])
-			{
-				if (!LootConfig_GetByName(loot.fallback, loot))
-				{
-					LogError("Unable to find fallback name '%s' from LootCrate '%s'", loot.fallback, loot.name);
+					LogError("Unable to find any items to spawn from LootCrate '%s' (Add a fallback!)", loot.name);
 					return;
 				}
 			}
-			else
-			{
-				LogError("Unable to find any items to spawn from LootCrate '%s' (Add a fallback!)", loot.name);
-				return;
-			}
 		}
+		while (!found[i]);	
 	}
-	while (!found[0] || !found[1] || !found[2]);
 	
 	float origin[3];
 	WorldSpaceCenter(crate, origin);
