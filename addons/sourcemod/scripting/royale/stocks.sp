@@ -418,7 +418,7 @@ stock bool TF2_TryToPickupDroppedWeapon(int client)
 			return false;
 		else
 		{
-			int tempSlot = TF2_GetSlotInClassname(classname);
+			int tempSlot = TF2_GetSlotInClassname(client, classname);
 			if (tempSlot >= WeaponSlot_Primary)
 			{
 				slot = tempSlot;
@@ -579,7 +579,28 @@ stock int TF2_GiveNamedItem(int client, Address item, TFClassType class = TFClas
 	char classname[256];
 	if (classnameTemp[0])
 	{
-		strcopy(classname, sizeof(classname), classnameTemp);
+		if(StrContains(classnameTemp, "tf_weapon_shotgun") == 0)
+		{
+			switch(class)
+			{
+				case TFClass_Soldier : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_soldier");
+				case TFClass_Pyro : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_pyro");
+				case TFClass_Heavy : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_hwg");
+				case TFClass_Engineer : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_primary");
+			}
+		}
+		else if(StrContains(classnameTemp, "tf_weapon_parachute") == 0)
+		{
+			switch(class)
+			{
+				case TFClass_Soldier : strcopy(classname, sizeof(classname), "tf_weapon_parachute_secondary");
+				case TFClass_DemoMan : strcopy(classname, sizeof(classname), "tf_weapon_parachute_primary");
+			}
+		}
+		else
+		{
+			strcopy(classname, sizeof(classname), classnameTemp);
+		}
 	}
 	else
 	{
@@ -619,14 +640,35 @@ stock int TF2_GiveNamedItem(int client, Address item, TFClassType class = TFClas
 	return weapon;
 }
 
-stock int TF2_CreateWeapon(int defindex, const char[] classnameTemp = NULL_STRING)
+stock int TF2_CreateWeapon(int client, int defindex, const char[] classnameTemp = NULL_STRING)
 {
 	TFClassType class = TFClass_Unknown;
 	
 	char classname[256];
 	if (classnameTemp[0])
 	{
-		strcopy(classname, sizeof(classname), classnameTemp);
+		if(StrContains(classnameTemp, "tf_weapon_shotgun") == 0)
+		{
+			switch(TF2_GetPlayerClass(client))
+			{
+				case TFClass_Soldier : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_soldier");
+				case TFClass_Pyro : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_pyro");
+				case TFClass_Heavy : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_hwg");
+				case TFClass_Engineer : strcopy(classname, sizeof(classname), "tf_weapon_shotgun_primary");
+			}
+		}
+		else if(StrContains(classnameTemp, "tf_weapon_parachute") == 0)
+		{
+			switch(TF2_GetPlayerClass(client))
+			{
+				case TFClass_DemoMan : strcopy(classname, sizeof(classname), "tf_weapon_parachute_primary");
+				default : strcopy(classname, sizeof(classname), "tf_weapon_parachute_secondary");
+			}
+		}
+		else
+		{
+			strcopy(classname, sizeof(classname), classnameTemp);
+		}
 	}
 	else
 	{
@@ -880,7 +922,7 @@ stock int TF2_GetItemSlot(int defindex, TFClassType class)
 	return slot;
 }
 
-stock int TF2_GetSlotInClassname(char[] classname)
+stock int TF2_GetSlotInClassname(int client, char[] classname)
 {
 	char primary[][] = {
 		"tf_weapon_scattergun",
@@ -896,7 +938,6 @@ stock int TF2_GetSlotInClassname(char[] classname)
 		"tf_weapon_grenadelauncher",
 		"tf_weapon_cannon",
 		"tf_weapon_minigun",
-		"tf_weapon_shotgun_primary",
 		"tf_weapon_sentry_revenge",
 		"tf_weapon_drg_pomson",
 		"tf_weapon_shotgun_building_rescue",
@@ -923,18 +964,14 @@ stock int TF2_GetSlotInClassname(char[] classname)
 		"tf_weapon_jar_milk",
 		"tf_weapon_handgun_scout_secondary",
 		"tf_weapon_cleaver",
-		"tf_weapon_shotgun_soldier",
-		"tf_weapon_shotgun",
 		"tf_weapon_buff_item",
 		"tf_weapon_raygun",
-		"tf_weapon_shotgun_pyro",
 		"tf_weapon_flaregun",
 		"tf_weapon_flaregun_revenge",
 		"tf_weapon_rocketpack",
 		"tf_weapon_jar_gas",
 		"tf_weapon_pipebomblauncher",
 		"tf_wearable_demoshield",
-		"tf_weapon_shotgun_hwg",
 		"tf_weapon_lunchbox",
 		"tf_weapon_laser_pointer",
 		"tf_weapon_mechanical_arm",
@@ -1005,7 +1042,29 @@ stock int TF2_GetSlotInClassname(char[] classname)
 	
 	if(StrEqual(classname, "tf_weapon_builder"))
 	{
-		return WeaponSlot_BuilderEngie;
+		switch(TF2_GetPlayerClass(client))
+		{
+			case TFClass_Spy : return WeaponSlot_Secondary;
+			case TFClass_Engineer : return WeaponSlot_BuilderEngie;
+		}
+	}
+	
+	if(StrContains(classname, "tf_weapon_shotgun") == 0)
+	{
+		switch(TF2_GetPlayerClass(client))
+		{
+			case TFClass_Soldier, TFClass_Pyro, TFClass_Heavy  : return WeaponSlot_Secondary;
+			case TFClass_Engineer : return WeaponSlot_Primary;
+		}
+	}
+	
+	if(StrContains(classname, "tf_weapon_parachute") == 0)
+	{
+		switch(TF2_GetPlayerClass(client))
+		{
+			case TFClass_Soldier : return WeaponSlot_Secondary;
+			case TFClass_DemoMan : return WeaponSlot_Primary;
+		}
 	}
 	
 	return -1;

@@ -190,7 +190,7 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
 	TFClassType class = TF2_GetPlayerClass(client);
 	
 	//Create starting fists weapon
-	int fists = TF2_CreateWeapon(INDEX_FISTS, g_FistsClassnames[class]);
+	int fists = TF2_CreateWeapon(client, INDEX_FISTS, g_FistsClassnames[class]);
 	if (fists > MaxClients)
 	{
 		TF2_EquipWeapon(client, fists);
@@ -200,13 +200,13 @@ public Action Event_PlayerSpawn(Event event, const char[] name, bool dontBroadca
 	//Create spellbook if player dont have one equipped
 	if (TF2_GetItemByClassname(client, "tf_weapon_spellbook") == -1)
 	{
-		int spellbook = TF2_CreateWeapon(INDEX_SPELLBOOK);
+		int spellbook = TF2_CreateWeapon(client, INDEX_SPELLBOOK);
 		if (spellbook > MaxClients)
 			TF2_EquipWeapon(client, spellbook);
 	}
 	
 	//Create starting parachute
-	int parachute = TF2_CreateWeapon(INDEX_BASEJUMPER, "tf_weapon_parachute_secondary");
+	int parachute = TF2_CreateWeapon(client, INDEX_BASEJUMPER, "tf_weapon_parachute_secondary");
 	if (parachute > MaxClients)
 		TF2_EquipWeapon(client, parachute);
 	

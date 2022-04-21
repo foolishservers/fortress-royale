@@ -876,6 +876,7 @@ public void TF2_OnConditionRemoved(int client, TFCond condition)
 	if (condition == TFCond_Parachute && FRPlayer(client).PlayerState == PlayerState_Parachute)
 	{
 		//Remove starting parachute as it no longer needed, and set state to alive
+		TF2_RemoveItemInSlot(client, WeaponSlot_Primary);
 		TF2_RemoveItemInSlot(client, WeaponSlot_Secondary);
 		FRPlayer(client).PlayerState = PlayerState_Alive;
 	}

@@ -73,7 +73,7 @@ public void LootCallback_CreateWeapon(int client, CallbackParams params, const f
 	//Can't find reskin, create default weapon
 	if (weapon == INVALID_ENT_REFERENCE)
 	{
-		weapon = TF2_CreateWeapon(defindex, classname);
+		weapon = TF2_CreateWeapon(client, defindex, classname);
 		if (weapon != INVALID_ENT_REFERENCE)
 			SetEntProp(weapon, Prop_Send, "m_iAccountID", GetSteamAccountID(client, false));
 	}
