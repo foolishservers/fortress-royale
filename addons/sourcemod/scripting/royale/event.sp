@@ -336,20 +336,20 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
 	
 	unknown.Cancel();
 	
-	//Drop all weapons
-	int weapon, pos;
-	while (TF2_GetItem(victim, weapon, pos))
-	{
-		if (TF2_ShouldDropWeapon(victim, weapon))
-		{
-			float origin[3], angles[3];
-			if (SDKCall_CalculateAmmoPackPositionAndAngles(victim, weapon, origin, angles))
-				TF2_CreateDroppedWeapon(victim, weapon, false, origin, angles);
-		}
-	}
-	
 	if (!deadringer)
 	{
+		//Drop all weapons
+		int weapon, pos;
+		while (TF2_GetItem(victim, weapon, pos))
+		{
+			if (TF2_ShouldDropWeapon(victim, weapon))
+			{
+				float origin[3], angles[3];
+				if (SDKCall_CalculateAmmoPackPositionAndAngles(victim, weapon, origin, angles))
+					TF2_CreateDroppedWeapon(victim, weapon, false, origin, angles);
+			}
+		}
+	
 		//Drop small health kit
 		TF2_DropItem(victim, "item_healthkit_small");
 		

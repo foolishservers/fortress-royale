@@ -744,10 +744,12 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		//Don't allow closing parachute while battle bus is still active
 		buttons &= ~IN_JUMP;
 	}
+	/*
 	else if (buttons & IN_ATTACK || buttons & IN_ATTACK2)
 	{
 		TF2_TryToPickupDroppedWeapon(client);
 	}
+	*/
 	
 	if (FRPlayer(client).InUse)
 	{
