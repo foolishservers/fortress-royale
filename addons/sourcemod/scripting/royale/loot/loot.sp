@@ -198,10 +198,10 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 	if (0 < client <= MaxClients && IsClientInGame(client))
 		class = TF2_GetPlayerClass(client);
 	
-	LootTable lootTable[3];
-	bool found[3];
+	LootTable lootTable[2];
+	bool found[2];
 	
-	for(int i = 0; i < 3; i++)
+	for(int i = 0; i < 2; i++)
 	{
 		do
 		{
@@ -256,7 +256,7 @@ public void Loot_BreakCrate(int entity, int crate, LootCrate loot)
 	float origin[3];
 	WorldSpaceCenter(crate, origin);
 	
-	for(int i = 0; i < 3; i++)
+	for(int i = 0; i < 2; i++)
 	{
 		//Start function call to loot creation function
 		Call_StartFunction(null, lootTable[i].callback_create);
