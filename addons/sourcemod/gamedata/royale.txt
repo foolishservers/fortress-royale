@@ -218,8 +218,8 @@
 			}
 			"CBasePlayer::EquipWearable"
 			{
-				"linux"		"435"
-				"windows"	"434"
+				"linux"		"436"
+				"windows"	"435"
 			}
 			"CBaseAnimating::StudioFrameAdvance"
 			{
