@@ -925,6 +925,7 @@ stock int TF2_GetItemSlot(int defindex, TFClassType class)
 stock int TF2_GetSlotInClassname(int client, char[] classname)
 {
 	char primary[][] = {
+		"tf_weapon_shotgun_primary",
 		"tf_weapon_scattergun",
 		"tf_weapon_handgun_scout_primary",
 		"tf_weapon_soda_popper",
@@ -959,6 +960,9 @@ stock int TF2_GetSlotInClassname(int client, char[] classname)
 	}
 	
 	char secondary[][] ={
+		"tf_weapon_shotgun_soldier",
+		"tf_weapon_shotgun_pyro",
+		"tf_weapon_shotgun_hwg",
 		"tf_weapon_pistol",
 		"tf_weapon_lunchbox_drink",
 		"tf_weapon_jar_milk",
@@ -1065,6 +1069,11 @@ stock int TF2_GetSlotInClassname(int client, char[] classname)
 			case TFClass_Soldier : return WeaponSlot_Secondary;
 			case TFClass_DemoMan : return WeaponSlot_Primary;
 		}
+	}
+	
+	if(StrContains(classname, "tf_weapon_grapplinghook") == 0)
+	{
+		return WeaponSlot_BuilderEngie;
 	}
 	
 	return -1;
